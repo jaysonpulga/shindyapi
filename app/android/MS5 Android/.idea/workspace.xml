@@ -12,45 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e74c51ff-984e-497d-8e78-c7d7c138e60f" name="Default" comment="updates">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_android_support_recyclerview_v7_26_1_0.xml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/Api.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/Api.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/BlockedEventsFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/CreatedEventsFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/EventDetailsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/EventDetailsActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/EventManagementActivity.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/EventReviewsFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/LikedEventsFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/LoginActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/MainActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/MyBlockedEventsAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/MyCreatedEventsAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/MyEventReviewsAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/MyLikedEventsAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/ProfileActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/ProfileActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/UsersMGMTActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/UsersMGMTActivity.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/dummy/DummyContent.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/interfaces/ClickShowPopup.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/interfaces/ClickShowPopup.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/interfaces/ShindiServer.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/interfaces/ShindiServer.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/MyShindigsFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/NewUsersFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/UsersFragment.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/adapter/BlockedUserAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/adapter/EventUserAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/adapter/MyShindingsAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/adapter/TouristSpotCardAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/adapter/UsersAdapter.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/main/model/TouristSpot.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/model/User.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/shindygo/shindy/model/User.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_created_events.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_created_events.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_user.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_user.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/integers.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/integers.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -2176,73 +2138,6 @@
             </path>
             <path>
               <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="manifests" type="f94875db:AndroidManifestsGroupNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="shindy" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="shindy" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="interfaces" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="shindy" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="shindy" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="shindy" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="widget" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="anim" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="mipmap" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="MS5 Android" type="1abcf292:AndroidViewProjectNode" />
               <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
             </path>
           </expand>
@@ -2438,6 +2333,21 @@
       <option name="presentableId" value="Default" />
       <updated>1525345981641</updated>
     </task>
+    <task id="LOCAL-00001" summary="updates">
+      <created>1526923162308</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1526923162309</updated>
+    </task>
+    <task id="LOCAL-00002" summary="updates">
+      <created>1526923423273</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1526923423273</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2450,7 +2360,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.50277996" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3297546" sideWeight="0.50277996" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3297546" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2459,7 +2369,7 @@
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24920635" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24920635" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21932516" sideWeight="0.49722" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2522,6 +2432,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="SHOW_UNVERSIONED_FILES_WHILE_COMMIT" value="false" />
     <MESSAGE value="updates" />
     <option name="LAST_COMMIT_MESSAGE" value="updates" />
   </component>
@@ -2856,7 +2767,7 @@
         <state relative-caret-position="192">
           <caret line="184" column="0" lean-forward="false" selection-start-line="184" selection-start-column="0" selection-end-line="184" selection-end-column="0" />
           <folding>
-            <element signature="e#5790#5795#0" expanded="true" />
+            <element signature="e#5790#5795#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2960,49 +2871,49 @@
         <state relative-caret-position="3934">
           <caret line="235" column="32" lean-forward="false" selection-start-line="235" selection-start-column="28" selection-end-line="235" selection-end-column="32" />
           <folding>
-            <element signature="e#347#359#0" expanded="true" />
-            <element signature="e#1059#1071#0" expanded="true" />
-            <element signature="e#1507#1519#0" expanded="true" />
-            <element signature="e#1565#1577#0" expanded="true" />
-            <element signature="e#1798#1811#0" expanded="true" />
-            <element signature="e#1858#1871#0" expanded="true" />
-            <element signature="e#2248#2260#0" expanded="true" />
-            <element signature="e#2298#2315#0" expanded="true" />
-            <element signature="e#2408#2421#0" expanded="true" />
-            <element signature="e#2699#2711#0" expanded="true" />
-            <element signature="e#2757#2769#0" expanded="true" />
-            <element signature="e#3046#3059#0" expanded="true" />
-            <element signature="e#3106#3119#0" expanded="true" />
-            <element signature="e#3438#3450#0" expanded="true" />
-            <element signature="e#3546#3564#0" expanded="true" />
-            <element signature="e#3657#3670#0" expanded="true" />
-            <element signature="e#3898#3910#0" expanded="true" />
-            <element signature="e#3956#3968#0" expanded="true" />
-            <element signature="e#4235#4248#0" expanded="true" />
-            <element signature="e#4295#4308#0" expanded="true" />
-            <element signature="e#4631#4643#0" expanded="true" />
-            <element signature="e#4739#4755#0" expanded="true" />
-            <element signature="e#4848#4861#0" expanded="true" />
-            <element signature="e#5138#5150#0" expanded="true" />
-            <element signature="e#5196#5208#0" expanded="true" />
-            <element signature="e#5475#5488#0" expanded="true" />
-            <element signature="e#5535#5548#0" expanded="true" />
-            <element signature="e#5869#5881#0" expanded="true" />
-            <element signature="e#5977#5994#0" expanded="true" />
-            <element signature="e#6087#6100#0" expanded="true" />
-            <element signature="e#6428#6441#0" expanded="true" />
-            <element signature="e#6483#6496#0" expanded="true" />
-            <element signature="e#7036#7049#0" expanded="true" />
-            <element signature="e#7284#7297#0" expanded="true" />
-            <element signature="e#8066#8079#0" expanded="true" />
-            <element signature="e#8276#8289#0" expanded="true" />
-            <element signature="e#9043#9068#0" expanded="true" />
-            <element signature="e#9160#9173#0" expanded="true" />
-            <element signature="e#9324#9337#0" expanded="true" />
-            <element signature="e#9376#9389#0" expanded="true" />
-            <element signature="e#9485#9497#0" expanded="true" />
-            <element signature="e#10761#10774#0" expanded="true" />
-            <element signature="e#11246#11259#0" expanded="true" />
+            <element signature="e#347#359#0" expanded="false" />
+            <element signature="e#1059#1071#0" expanded="false" />
+            <element signature="e#1507#1519#0" expanded="false" />
+            <element signature="e#1565#1577#0" expanded="false" />
+            <element signature="e#1798#1811#0" expanded="false" />
+            <element signature="e#1858#1871#0" expanded="false" />
+            <element signature="e#2248#2260#0" expanded="false" />
+            <element signature="e#2298#2315#0" expanded="false" />
+            <element signature="e#2408#2421#0" expanded="false" />
+            <element signature="e#2699#2711#0" expanded="false" />
+            <element signature="e#2757#2769#0" expanded="false" />
+            <element signature="e#3046#3059#0" expanded="false" />
+            <element signature="e#3106#3119#0" expanded="false" />
+            <element signature="e#3438#3450#0" expanded="false" />
+            <element signature="e#3546#3564#0" expanded="false" />
+            <element signature="e#3657#3670#0" expanded="false" />
+            <element signature="e#3898#3910#0" expanded="false" />
+            <element signature="e#3956#3968#0" expanded="false" />
+            <element signature="e#4235#4248#0" expanded="false" />
+            <element signature="e#4295#4308#0" expanded="false" />
+            <element signature="e#4631#4643#0" expanded="false" />
+            <element signature="e#4739#4755#0" expanded="false" />
+            <element signature="e#4848#4861#0" expanded="false" />
+            <element signature="e#5138#5150#0" expanded="false" />
+            <element signature="e#5196#5208#0" expanded="false" />
+            <element signature="e#5475#5488#0" expanded="false" />
+            <element signature="e#5535#5548#0" expanded="false" />
+            <element signature="e#5869#5881#0" expanded="false" />
+            <element signature="e#5977#5994#0" expanded="false" />
+            <element signature="e#6087#6100#0" expanded="false" />
+            <element signature="e#6428#6441#0" expanded="false" />
+            <element signature="e#6483#6496#0" expanded="false" />
+            <element signature="e#7036#7049#0" expanded="false" />
+            <element signature="e#7284#7297#0" expanded="false" />
+            <element signature="e#8066#8079#0" expanded="false" />
+            <element signature="e#8276#8289#0" expanded="false" />
+            <element signature="e#9043#9068#0" expanded="false" />
+            <element signature="e#9160#9173#0" expanded="false" />
+            <element signature="e#9324#9337#0" expanded="false" />
+            <element signature="e#9376#9389#0" expanded="false" />
+            <element signature="e#9485#9497#0" expanded="false" />
+            <element signature="e#10761#10774#0" expanded="false" />
+            <element signature="e#11246#11259#0" expanded="false" />
           </folding>
         </state>
       </provider>
