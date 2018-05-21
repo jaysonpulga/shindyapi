@@ -1,9 +1,7 @@
 package com.shindygo.shindy;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.shindygo.shindy.interfaces.ClickUser;
-import com.shindygo.shindy.main.adapter.BlockedUserAdapter;
+import com.shindygo.shindy.adapter.BlockedUserAdapter;
 import com.shindygo.shindy.model.Filter;
 import com.shindygo.shindy.model.User;
 import com.shindygo.shindy.utils.FontUtils;
@@ -34,7 +32,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -148,8 +145,13 @@ public class UsersMGMTActivity extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                users.clear();
-                blockedUserAdapter.notifyDataSetChanged();
+                try{
+                    users.clear();
+                    blockedUserAdapter.notifyDataSetChanged();
+                }catch (NullPointerException e){
+                    Log.v("BlockedUser", "null");
+                }
+
             }
         });
     }

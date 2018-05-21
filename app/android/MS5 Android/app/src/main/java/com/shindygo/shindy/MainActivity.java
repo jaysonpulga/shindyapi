@@ -1,13 +1,17 @@
 package com.shindygo.shindy;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,21 +19,24 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.rahimlis.badgedtablayout.BadgedTabLayout;
-import com.shindygo.shindy.main.MyShindigsFragment;
-import com.shindygo.shindy.main.NewUsersFragment;
-import com.shindygo.shindy.main.UsersFragment;
+import com.shindygo.shindy.model.EventInvite;
 import com.shindygo.shindy.utils.FontUtils;
+
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,9 +61,15 @@ public class MainActivity extends AppCompatActivity
     private ViewPager mViewPager;
     ImageView imageViewMenu;
     TextView menuName;
+
+    private long lastPressed = Calendar.getInstance().getTimeInMillis();
+    private final long BACK_PRESSED_EXIT_THRESHOLD = 3000; //in millis
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Api.initialized(getApplicationContext());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -90,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         tabs.setupWithViewPager(mViewPager);
-        tabs.setBadgeText(2, "13");
+
 
 //        tabLayout.setTabFont(ResourcesCompat.getFont(this, R.font.trench));
 //        tabs.setBadgeTruncateAt(TextUtils.TruncateAt.MIDDLE);
@@ -100,6 +113,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void setTabBadgeText(int index, String text){
+        tabs.setBadgeText(index, text);
+    }
     void openenDrawer()
     {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,8 +132,68 @@ public class MainActivity extends AppCompatActivity
             if (getFragmentManager().getBackStackEntryCount() > 0) {
                 getFragmentManager().popBackStack();
             }
-            else
-                super.onBackPressed();
+            else{
+
+                long now = Calendar.getInstance().getTimeInMillis();
+                if(now - lastPressed < BACK_PRESSED_EXIT_THRESHOLD){
+                    super.onBackPressed();
+                    return;
+                }
+                lastPressed = now;
+                Toast.makeText(MainActivity.this, R.string.prompt_double_back_exit, Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+    void closeDrawer(){
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
+    /**  reload the webview
+     *
+     */
+    public void reloadPage() {
+
+        if(!isConnectedOrConnecting(MainActivity.this)){
+            showDialog("require_internet");
+
+            //showProgress(btnRefresh,true);
+            return;
+        }
+       // loadPage(current_url==null? BASE_URL:current_url);
+    }
+
+    public static boolean isConnectedOrConnecting(Context context) {
+
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        return activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+    }
+
+    /** Show simple alert box
+     *
+     * @param msg Message to display
+     */
+    public void showDialog(String msg) {
+        switch (msg){
+            case "require_internet":
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("Alert");
+                alertDialog.setMessage("Require internet");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "close",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                //show(btnRefresh, true);
+                            }
+                        });
+                alertDialog.show();
+                break;
         }
     }
 /*
@@ -152,59 +228,64 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_profile_preferences: {
-                FragmentManager fm  = getSupportFragmentManager();
+                FragmentManager fm = getSupportFragmentManager();
                 Fragment fragment = new ProfileActivity();
                 fm.beginTransaction()
-                        .replace(R.id.frame,fragment)
+                        .replace(R.id.frame, fragment)
                         .addToBackStack("my_fragment")
                         .commit();
+                closeDrawer();
                 break;
             }
             case R.id.nav_logout: {
                 LoginManager.getInstance().logOut();
                 Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                closeDrawer();
+
                 startActivity(login);
                 finish();
+
                 break;
             }
-            case R.id.nav_users_mgmt:
-            {
-                FragmentManager fm  = getSupportFragmentManager();
+            case R.id.nav_users_mgmt: {
+                FragmentManager fm = getSupportFragmentManager();
                 Fragment fragment = new UsersMGMTActivity();
                 fm.beginTransaction()
-                        .replace(R.id.frame,fragment)
+                        .replace(R.id.frame, fragment)
                         .addToBackStack("my_fragment")
                         .commit();
+                closeDrawer();
+
                 break;
             }
-            case R.id.nav_shindigs:
+            case R.id.nav_host_new_event:
+            {FragmentManager fm = getSupportFragmentManager();
+                Fragment fragment = new EventActivity();
+                fm.beginTransaction()
+                        .replace(R.id.frame, fragment)
+                        .addToBackStack("my_fragment")
+                        .commit();
+                closeDrawer();
+
+                break;
+        }
+            case R.id.nav_shindigs: {
                 Fragment fragment= getSupportFragmentManager().findFragmentById(R.id.frame);
                 if (fragment!=null)
                 getSupportFragmentManager().beginTransaction().remove(fragment).commit();
-                break;
-            case R.id.nav_event_mgmt:
-//                FragmentManager fm  = getSupportFragmentManager();
-//                Fragment fragment = new EventFeedbackActivity();
-//                fm.beginTransaction()
-//                        .replace(R.id.frame,fragment)
-//                        .addToBackStack("my_fragment")
-//                        .commit();
-                break;
+                closeDrawer();
+
+                break;}
+            case R.id.nav_event_mgmt:{
+                closeDrawer();
+                Intent intent = new Intent(MainActivity.this, EventManagementActivity.class);
+                startActivity(intent);
+                overridePendingTransition( R.anim.left_out, R.anim.left_in );
+
+
+                break;}
         }
-        /*if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

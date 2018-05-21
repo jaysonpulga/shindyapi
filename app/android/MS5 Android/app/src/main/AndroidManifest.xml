@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shindygo.shindy">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -22,14 +25,20 @@
             -->
         </activity>
 
-<!--        <meta-data
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_API_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!--
+            <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />-->
+            android:value="@string/facebook_app_id" />
+        -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
-        434815240293809
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -38,21 +47,17 @@
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.VIEW" /> -->
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-
-            <!-- <category android:name="android.intent.category.DEFAULT" /> -->
-            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
-
-
-            <!-- <data android:scheme="@string/fb_login_protocol_scheme" /> -->
-            <!-- </intent-filter> -->
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,14 +65,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SearchFilterActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
+        <!--
+            <activity
             android:name=".UsersMGMTActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        -->
 
+        <activity
+            android:name=".EventDetailsActivity"
+            android:label="@string/title_activity_event_details" />
+        <activity
+            android:name=".EventManagementActivity"
+            android:label="@string/title_activity_event_management"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

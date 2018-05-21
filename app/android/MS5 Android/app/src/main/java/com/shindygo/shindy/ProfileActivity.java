@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.shindygo.shindy.model.User;
 
@@ -41,6 +43,8 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 
 public class ProfileActivity extends Fragment {
+
+    private static final String TAG = ProfileActivity.class.getSimpleName();
 
     @BindView(R.id.imageView2)
     ImageView imageView2;
@@ -112,18 +116,9 @@ public class ProfileActivity extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 try {
-                    Log.e("124231", response.toString());
+                    Log.e(TAG, response.toString());
                     user = response.body();
-                    //Glide.with(getApplicationContext()).load(user.getPhoto()).into(imageView2);
-                    tvNameAge.setText(user.getFullname());
-                    etZip.setText(user.getZipcode());
-                    etAbout.setText(user.getAbout());
-                    etAge.setText(user.getAgePref());
-                    // spAge.setSelection(getIndex(spAge, user.getAgePref()));
-                    spDistance.setSelection(Integer.parseInt(user.getDistance()));
-                    spReligion.setSelection(Integer.parseInt(user.getReligion()));
-                    gender.setSelection(Integer.parseInt(user.getGenderPref()));
-                    spAvaiba.setSelection(getIndex(spAvaiba, user.getAvailability()));
+                    setUserInView(user);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
@@ -140,52 +135,44 @@ public class ProfileActivity extends Fragment {
                 OnClickLogout();
             }
         });
-        final SharedPreferences sharedPref = getContext().getSharedPreferences("set", Context.MODE_PRIVATE);
-        final String url = sharedPref.getString("url", "");
-        Glide.with(getContext()).load(url).into(imageView2);
-   /*     tvNameAge.setText(sharedPref.getString("name", ""));
-        etZip.setText(sharedPref.getString("zip", ""));
-        etAbout.setText(sharedPref.getString("about", "")); //TODO убрать шаред преф и настроять норм отображение спиннеров
-        //spAge.setSelection(sharedPref.getInt("spAge", 0));
-        spDistance.setSelection(sharedPref.getInt("spDistance", 0));
-        spReligion.setSelection(sharedPref.getInt("spReligion", 0));
-        gender.setSelection(sharedPref.getInt("spGender", 0));
-        spAvaiba.setSelection(sharedPref.getInt("spAva", 0));*/
+
         btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences sharedPref = getContext().getSharedPreferences("set", Context.MODE_PRIVATE);
-                User user = new User(sharedPref.getString("fbid", ""), sharedPref.getString("name", ""), sharedPref.getString("email", ""));
-                if (etZip.getText().toString().length() > 0)
-                    user.setZipcode(etZip.getText().toString());
-                if (etAbout.getText().toString().length() > 0)
-                    user.setAbout(etAbout.getText().toString());
-                user.setAgePref(etAge.getText().toString());
-                user.setDistance(String.valueOf(spDistance.getSelectedItemPosition()));
-                user.setReligion("" + spReligion.getSelectedItemPosition());
-                user.setGenderPref("" + gender.getSelectedItemPosition());
-                user.setAvailability(spAvaiba.getSelectedItem().toString());
-
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt("prefAge", Integer.parseInt(etAge.getText().toString()));
-                editor.putInt("spDistance", spDistance.getSelectedItemPosition());
-                editor.putInt("spReligion", spReligion.getSelectedItemPosition());
-                editor.putInt("spGender", gender.getSelectedItemPosition());
-                editor.putInt("spAva", spAvaiba.getSelectedItemPosition());
-                editor.apply();
-
-                api.updateUser(user, new Callback<Object>() {
+                btSave.post(new Runnable() {
                     @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
-                        Log.e("124231", "asdgdsg");
-                        getFragmentManager().beginTransaction().remove(ProfileActivity.this).commit();
-                    }
+                    public void run() {
+                        User user = User.getCurrentUser();
+                        String zipCode = etZip.getText().toString();
+                        String about = etAbout.getText().toString();
+                        if (zipCode.trim().length() > 0)
+                            user.setZipcode(zipCode);
+                        if (about.trim().length() > 0)
+                            user.setAbout(about);
+                        user.setAgePref(etAge.getText().toString());
+                        user.setDistance(String.valueOf(spDistance.getSelectedItemPosition()));
+                        user.setReligion("" + spReligion.getSelectedItemPosition());
+                        user.setGenderPref("" + gender.getSelectedItemPosition());
+                        user.setAvailability(spAvaiba.getSelectedItem().toString());
 
-                    @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
-                        Log.e("124231", "asdgdsg");
+
+                        api.updateUser(user, new Callback<Object>() {
+                            @Override
+                            public void onResponse(Call<Object> call, Response<Object> response) {
+                                Log.v(TAG, response.toString());
+                                getFragmentManager().beginTransaction().remove(ProfileActivity.this).commit();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Object> call, Throwable t) {
+                                Log.e(TAG, t.getMessage());
+                                Snackbar.make(btSave, R.string.save_failed, Snackbar.LENGTH_LONG).show();
+
+                            }
+                        });
                     }
                 });
+
             }
         });
 
@@ -203,9 +190,9 @@ public class ProfileActivity extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 tvLeft.setText(131-editable.length() + " character left");
-                SharedPreferences.Editor editor = sharedPref.edit();
+/*                SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("about", editable.toString());
-                editor.apply();
+                editor.apply();*/
             }
         });
         etZip.addTextChangedListener(new TextWatcher() {
@@ -222,9 +209,9 @@ public class ProfileActivity extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                SharedPreferences.Editor editor = sharedPref.edit();
+/*                SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("zip", editable.toString());
-                editor.apply();
+                editor.apply();*/
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
@@ -241,9 +228,9 @@ public class ProfileActivity extends Fragment {
                 // Inflate the custom layout/view
                 View customView = inflater.inflate(R.layout.profile_popup, null);
                 ImageView imageView = customView.findViewById(R.id.imageView2);
-                Glide.with(getContext()).load(url).into(imageView);
+                Glide.with(getContext()).load(user.getPhoto()).into(imageView);
                 TextView name = customView.findViewById(R.id.tv_name);
-                name.setText(sharedPref.getString("name", ""));
+                name.setText(user.getFullname());
                 TextView about = customView.findViewById(R.id.tv_desc);
                 about.setText(user.getAbout());
                 TextView city = customView.findViewById(R.id.tv_city);
@@ -291,6 +278,24 @@ public class ProfileActivity extends Fragment {
         startActivity(intent);
         if (getActivity()!=null)
         getActivity().finish();
+    }
+
+    private void setUserInView(User user) {
+        this.user = user;
+        Glide.with(getContext()).load(user.getPhoto()).into(imageView2);
+        tvNameAge.setText(user.getFullname());
+        etZip.setText(user.getZipcode());
+        etAbout.setText(user.getAbout());
+        etAge.setText(user.getAgePref());
+        spAge.setSelection(getIndex(spAge, user.getAgePref()));
+        spDistance.setSelection(Integer.parseInt(user.getDistance()));
+        spReligion.setSelection(Integer.parseInt(user.getReligion()));
+        gender.setSelection(Integer.parseInt(user.getGenderPref()));
+        spAvaiba.setSelection(getIndex(spAvaiba, user.getAvailability()));
+    }
+
+    public void notifyDataChanged(){
+        setUserInView(user);
     }
 
 }

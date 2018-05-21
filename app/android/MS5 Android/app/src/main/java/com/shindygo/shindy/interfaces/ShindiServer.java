@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
+import com.shindygo.shindy.model.Event;
+import com.shindygo.shindy.model.EventInvite;
 import com.shindygo.shindy.model.User;
 
 import org.json.JSONObject;
@@ -34,12 +36,12 @@ public interface ShindiServer {
     @Headers({
             "API-key: shindykey456"
     })
-    @GET("userlist/api-key/shindykey456 ")
+    @GET("restapicontroller/userlist/api-key/shindykey456 ")
     Call<List<User>> getUsers();
     @Headers({
             "API-key: shindykey456"
     })
-    @GET("userlist/fbid/{id}/api-key/shindykey456 ")
+    @GET("restapicontroller/userlist/fbid/{id}/api-key/shindykey456 ")
     Call<User> getUsersbyId(@Path("id") String id);
 
     @Headers({
@@ -47,23 +49,23 @@ public interface ShindiServer {
             "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
     })
     @FormUrlEncoded
-    @POST("check_user")
+    @POST("restapicontroller/check_user")
     Call<Object> checkUser(@FieldMap Map<String ,Object> user);
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("update_user")
+    @POST("restapicontroller/update_user")
     Call<Object> updateUser(@FieldMap Map<String ,Object> user);
 
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("blokeduser ")
+    @POST("restapicontroller/blokeduser ")
     Call<Object> blockUser(@FieldMap Map<String ,String> user);
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("userblockedlist")
+    @POST("restapicontroller/userblockedlist")
     Call<List<User>> getBlockedUsersFilter(@Field("user_fbid") String id,@Field("fullname") String text,
 
                                      @Nullable @Field("")String  distance,
@@ -75,19 +77,19 @@ public interface ShindiServer {
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("userblockedlist")
+    @POST("restapicontroller/userblockedlist")
     Call<List<User>> getBlockedUsers(@Field("user_fbid") String id ,@Field("fullname") String name);
 
 
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("SearchAlluserinshindy")
+    @POST("restapicontroller/SearchAlluserinshindy")
     Call<List<User>> searchUser(@Field("user_fbid") String fbID,@Field("fullname") String text,@Nullable @Field("filterby")String filter);
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("SearchAlluserinshindy")
+    @POST("restapicontroller/SearchAlluserinshindy")
     Call<List<User>> searchUserFilter(@Field("user_fbid") String fbID,@Field("fullname") String text,
                                       @Nullable @Field("filterby")String filter,
                                       @Nullable @Field("")String  distance,
@@ -100,7 +102,7 @@ public interface ShindiServer {
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("unblocked")
+    @POST("restapicontroller/unblocked")
     Call<Object> unblockUser(@FieldMap Map<String ,String> user);
 
 
@@ -108,13 +110,58 @@ public interface ShindiServer {
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("addfavoriteuser")
+    @POST("restapicontroller/addfavoriteuser")
     Call<Object> addfavoriteUser(@FieldMap Map<String ,String> user);
 
     @Headers({"API-key: shindykey456"})
     @FormUrlEncoded
-    @POST("unfavoriteuser")
+    @POST("restapicontroller/unfavoriteuser")
     Call<Object> unfavoriteUser(@FieldMap Map<String ,String> user);
 
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @FormUrlEncoded
+    @POST("restapicontroller/newuserlist")
+    Call<List<User>> fetchNewUsers(@Field("user_fbid") String myId);
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @FormUrlEncoded
+    @POST("restapicontroller/adduseras_liketogroup")
+    Call<JSONObject> likeUserToGroup(@Field("user_fbid") String myId, @Field("friend_fbid") String friend_fbId );
+
+
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @FormUrlEncoded
+    @POST("eventapicontroller/attending_event")
+    Call<List<EventInvite>> fetchAttendingEvents(@Field("user_fbid") String id );
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @FormUrlEncoded
+    @POST("eventapicontroller/invited_event")
+    Call<List<EventInvite>> fetchInvitedEvents(@Field("user_fbid") String id );
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @FormUrlEncoded
+    @POST("eventapicontroller/create_event")
+    Call<JSONObject> createEvent(@FieldMap Map<String, Object> event);
 
 }

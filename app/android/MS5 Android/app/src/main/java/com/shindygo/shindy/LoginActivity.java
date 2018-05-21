@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
@@ -57,6 +58,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final List<String> FB_RQ_PERMISSION = Arrays.asList("user_birthday","public_profile",
+            "email","user_location","user_friends","user_age_range");
+
+
     @BindView(R.id.appTitle)
     TextView appTitle;
     @BindView(R.id.app_text)
@@ -68,19 +73,21 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
- //   private ProfileTracker profileTracker;
+    private ProfileTracker profileTracker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        Api.initialized(this        );
 
 
         FontUtils.setFont(appTitle, FontUtils.Roboto_Light);
         FontUtils.setFont(appText, FontUtils.Roboto_Light);
     //FontUtils.setFont(fbLoginBtn, FontUtils.Roboto_Medium);
         FontUtils.setFont(fbVerficationTxt, FontUtils.Roboto_Light);
-        FacebookSdk.sdkInitialize(getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -103,7 +110,8 @@ public class LoginActivity extends AppCompatActivity {
    /*     profileTracker.startTracking();*/
 
       loginButton = (LoginButton)findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("user_birthday","public_profile", "email","user_location"));
+        loginButton.setReadPermissions(FB_RQ_PERMISSION);
+        //loginButton.setPublishPermissions(Arrays.asList("publish_actions"));
         loginButton.registerCallback(callbackManager, callback);
 
 
@@ -124,12 +132,16 @@ public class LoginActivity extends AppCompatActivity {
 
            Set<String> per= loginResult.getAccessToken().getDeclinedPermissions();
             Set<String> paer= loginResult.getAccessToken().getPermissions();
+
             GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
                     new GraphRequest.GraphJSONObjectCallback() {
+                         String email ="";
+                         String location ="";
                         @Override
-                        public void onCompleted(JSONObject object, GraphResponse response) {
+                        public void onCompleted(final JSONObject object, GraphResponse response) {
                             Log.v("LoginActivity", response.toString());
-                            String email = "";
+
+                            Log.v("LoginActivity", object.toString());
 
                                 try {
                                     email = object.getString("email");
@@ -137,17 +149,42 @@ public class LoginActivity extends AppCompatActivity {
                                 {
                                     email = "noemail@gmail.com";
                                 }
-                              //  String birthday = object.getString("birthday"); // 01/31/1980 format
+                            String birthday = object.optString("birthday",""); // 01/31/1980 format
+                            try {
+                                location = object.getJSONObject("location").optString("name","");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-                             nextActivity( Profile.getCurrentProfile(),email,"");
+                            if(Profile.getCurrentProfile()==null){
+                                    profileTracker = new ProfileTracker() {
+                                        @Override
+                                        protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
+                                            Profile.setCurrentProfile(newProfile);
+
+                                            profileTracker.stopTracking();
+                                            User user = new User(newProfile.getId(), newProfile.getName(),email);
+
+                                            String photoUrl = newProfile.getProfilePictureUri(200,200).toString();
+                                            user.setPhoto(photoUrl);
+                                            user.setAddress(location);
+                                            User.setCurrentUser(user);
+                                            nextActivity( user);
+                                        }
+                                    };
+                                    profileTracker.startTracking();
+                            }else {
+                                nextActivity( Profile.getCurrentProfile(),email,birthday);
                              /*   LoginManager.getInstance().logInWithReadPermissions(
                                         LoginActivity.this,
                                         Arrays.asList("user_birthday","email","user_location"));*/
+                            }
+
 
                         }
                     });
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,gender,birthday");
+            parameters.putString("fields", "id,name,email,gender,birthday,location");
             request.setParameters(parameters);
             request.executeAsync();
 
@@ -161,20 +198,21 @@ public class LoginActivity extends AppCompatActivity {
         public void onError(FacebookException e) {      }
     };
 
-    private void nextActivity(Profile profile,String email,String birth){
+    private void nextActivity(Profile profile,String email,String birthday){
         if(profile != null){
-
+/*
             SharedPreferences sharedPref =   getSharedPreferences("set", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("name", profile.getName());
             editor.putString("fbid", profile.getId());
             editor.putString("url", profile.getProfilePictureUri(200,200).toString());
-            editor.apply();
+            editor.apply();*/
             Api api = new Api(this);
             User user = new User(profile.getId(), profile.getName(),email);
 
-
-            user.setPhoto(profile.getProfilePictureUri(200,200).toString());
+            String photoUrl = profile.getProfilePictureUri(200,200).toString();
+            user.setPhoto(photoUrl);
+            User.setCurrentUser(user);
             api.checkUser(user, new Callback<Object>() {
 
                 @Override
@@ -186,7 +224,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-
+                    Log.e(TAG,t.getMessage());
                 }
             });
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
@@ -200,6 +238,27 @@ public class LoginActivity extends AppCompatActivity {
            finish();
         }
 
+    }
+
+    private void nextActivity(User user){
+        new Api(this).checkUser(user, new Callback<Object>() {
+
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+
+                Log.v("login",response.message());
+                //no data
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                Log.e(TAG,t.getMessage());
+            }
+        });
+        Intent main = new Intent(LoginActivity.this, MainActivity.class);
+        main .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(main);
+        finish();
     }
 
     public  void printHashKey(Context pContext) {

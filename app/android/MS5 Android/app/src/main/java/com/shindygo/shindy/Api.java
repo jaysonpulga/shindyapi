@@ -5,16 +5,21 @@ import android.content.SharedPreferences;
 import android.widget.Switch;
 
 import com.shindygo.shindy.interfaces.ShindiServer;
+import com.shindygo.shindy.model.Event;
+import com.shindygo.shindy.model.EventInvite;
 import com.shindygo.shindy.model.Filter;
 import com.shindygo.shindy.model.User;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -28,18 +33,33 @@ public class Api {
     ShindiServer shindiServer;
     Retrofit retrofit ;
     private SharedPreferences sharedPref ;
-    Context context;
+
+    public static Context getContext() {
+        return context;
+    }
+
+    public static void setContext(Context context) {
+        Api.context = context;
+    }
+
+    private static Context context;
     private String fbid;
     public Api(Context context) {
         this.context = context;
 
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new Incept("shindy@admin", "orange@123"))
+                .addInterceptor(interceptor)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
                 .build();
+
         retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl("http://shindygo.com/rest_webservices/restapicontroller/")
+                .baseUrl("http://shindygo.com/rest_webservices/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         shindiServer = retrofit.create(ShindiServer.class);
@@ -60,12 +80,19 @@ public class Api {
         Call<Object> add = shindiServer.updateUser(user.toMap() );
         add.enqueue(callback);
     }
+
     void getUserByID(Callback<User> callback)
     {
         final SharedPreferences sharedPref = context.getSharedPreferences("set", Context.MODE_PRIVATE);
         final String fbid = sharedPref.getString("fbid", "");
         Call<User> getUsers = shindiServer.getUsersbyId(fbid);
         getUsers.enqueue(callback);
+    }
+    public void getUserByFbId(String fbId, Callback<User> callback)
+    {
+
+        Call<User> getUser = shindiServer.getUsersbyId(fbId);
+        getUser.enqueue(callback);
     }
     public  void searchBlocedUserF(String  text,Filter filter,   Callback<List<User>> callback){
 
@@ -165,5 +192,52 @@ public class Api {
         map.put("friend_fbid", toBlockId);
         Call<Object> add = shindiServer.unfavoriteUser(map);
         add.enqueue(callback);
+    }
+
+    public void fetchNewUsers(String myId, Callback<List<User>> callback) {
+        Call<List<User>> fetchNewUsers = shindiServer.fetchNewUsers(myId);
+        fetchNewUsers.enqueue(callback);
+    }
+
+
+    public void likeUserToGroup(String myId, String friendFbId, Callback<JSONObject> callback) {
+        Call<JSONObject> likeUserToGroup = shindiServer.likeUserToGroup(myId, friendFbId);
+        likeUserToGroup.enqueue(callback);
+    }
+
+
+
+    public  void fetchAttendingEvents(String fbId,   Callback<List<EventInvite>> callback){
+        Call<List<EventInvite>>fetchEvents = shindiServer.fetchAttendingEvents(fbId);
+        fetchEvents.enqueue(callback);
+    }
+    public  void fetchInvitedEvents(String fbId,   Callback<List<EventInvite>> callback){
+        Call<List<EventInvite>>fetchEvents = shindiServer.fetchInvitedEvents(fbId);
+        fetchEvents.enqueue(callback);
+    }
+
+    public void createEvent(Event event,   Callback<JSONObject> callback){
+        Call<JSONObject>createEvent = shindiServer.createEvent(event.toMap());
+        createEvent.enqueue(callback);
+    }
+
+
+    public static void initialized(Context applicationContext) {
+       if(isInitialized()){
+           return;
+       }
+       instance = new Api(applicationContext);
+    }
+
+    private static boolean isInitialized() {
+        return instance!=null;
+    }
+
+    private static Api instance;
+
+    public static Api getInstance() {
+        if(instance!=null)
+            return instance;
+        return new Api(context);
     }
 }
