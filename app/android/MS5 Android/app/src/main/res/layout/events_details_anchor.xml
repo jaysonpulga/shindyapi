@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:showIn="@layout/activity_event_details"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+        app:layout_scrollFlags="enterAlways"
+        app:layout_collapseMode="pin"
+        android:orientation="vertical">
+        <com.rahimlis.badgedtablayout.BadgedTabLayout
+            android:id="@+id/tabs"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:badgeBackgroundColor="@color/navigation_notification_yellow"
+            app:badgeTextColor="@android:color/white"
+            app:tabBackground="@android:color/white"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@android:color/black"
+            app:tabTextColor="@android:color/black"
+
+            app:layout_scrollFlags="enterAlways"
+            app:layout_collapseMode="pin"
+
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <include
+            android:id="@+id/layButtons"
+
+            layout="@layout/events_details_buttons"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
+<!--
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_scrollFlags="enterAlways"
+    app:layout_collapseMode="pin"
+
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+    >
+
+    <com.rahimlis.badgedtablayout.BadgedTabLayout
+        android:id="@+id/tabs"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:badgeBackgroundColor="@color/navigation_notification_yellow"
+        app:badgeTextColor="@android:color/white"
+        app:tabBackground="@android:color/white"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabTextColor="@android:color/black" />
+
+    <include
+        android:id="@+id/layButtons"
+
+        layout="@layout/events_details_buttons"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
+
+
+</LinearLayout>
+<com.shindygo.shindy.widget.CustomViewPager
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->

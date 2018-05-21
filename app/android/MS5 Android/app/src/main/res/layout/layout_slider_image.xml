@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#88000000"
+        android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true" />
+
+    <cn.lightsky.infiniteindicator.InfiniteIndicator
+        android:id="@+id/infinite_anim_circle"
+        android:layout_width="match_parent"
+        android:layout_height="213dp"
+        app:indicator_type="indicator_anim_circle" />
+
+
+    </RelativeLayout>
+
