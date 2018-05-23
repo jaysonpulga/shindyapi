@@ -164,4 +164,39 @@ public interface ShindiServer {
     @POST("eventapicontroller/create_event")
     Call<JSONObject> createEvent(@FieldMap Map<String, Object> event);
 
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @GET("eventapicontroller/eventlistcreatedbyuser/user_fbid/{user_fbid}/api-key/shindykey456")
+    Call<List<EventInvite>> fetchCreatedEvents(@Path("user_fbid") String user_fbId );
+
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @GET("eventapicontroller/eventlikelist/user_fbid/{user_fbid}/api-key/shindykey456")
+    Call<List<EventInvite>> fetchLikedEvents(@Path("user_fbid") String fbId);
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @GET("eventapicontroller/eventblockedlist/user_fbid/{user_fbid}/api-key/shindykey456")
+    Call<List<EventInvite>> fetchBlockedEvents(@Path("user_fbid") String fbId);
+
+
+    @Headers({
+            "API-key: shindykey456",
+            "Authorization: Basic c2hpbmR5QGFkbWluOm9yYW5nZUAxMjM="
+    })
+    @GET("eventapicontroller/eventreviewlist/user_fbid/{user_fbid}/api-key/shindykey456")
+    Call<List<EventInvite>> fetchReviewsByUser(@Path("user_fbid") String fbId);
+
+
 }

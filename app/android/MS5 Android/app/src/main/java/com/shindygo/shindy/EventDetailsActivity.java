@@ -42,6 +42,7 @@ public class EventDetailsActivity extends AppCompatActivity  {
     private static final String TAG =EventDetailsActivity.class.getSimpleName();
 
 
+
 /*    @BindView(R.id.title)
     TextView title;
     @BindView(R.id.toolbar)

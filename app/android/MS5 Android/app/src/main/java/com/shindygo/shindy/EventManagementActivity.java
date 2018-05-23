@@ -46,11 +46,6 @@ public class EventManagementActivity extends AppCompatActivity {
     @BindView(R.id.container)
     ViewPager container;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +63,8 @@ public class EventManagementActivity extends AppCompatActivity {
 
         // Set up the ViewPager with the sections adapter.
         //mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        tabs.setupWithViewPager(mViewPager);
+        container.setAdapter(mSectionsPagerAdapter);
+        tabs.setupWithViewPager(container);
 
 /*
 
@@ -134,7 +129,7 @@ public class EventManagementActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return CreatedEventsFragment.newInstance(position + 1);
+                    return CreatedEventsFragment.newInstance();
                 case 1:
                     return LikedEventsFragment.newInstance(position + 1);
                 case 2:

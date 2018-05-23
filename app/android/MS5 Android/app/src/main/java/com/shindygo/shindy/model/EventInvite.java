@@ -74,6 +74,8 @@ public class EventInvite extends Event {
     @Expose
     String inviteCode;
 
+
+
     public EventInvite() {
     }
 

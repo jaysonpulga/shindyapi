@@ -1,8 +1,6 @@
 package com.shindygo.shindy.adapter;
 
-/**
- * Created by User on 16.03.2018.
- */
+
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -29,9 +27,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sergey on 24.10.2017.
- */
 
 public class MyShindingsAdapter extends RecyclerView.Adapter<MyShindingsAdapter.MyShindingsHolder> {
     private static final String TAG = MyShindingsAdapter.class.getSimpleName();

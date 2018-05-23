@@ -3,31 +3,60 @@ package com.shindygo.shindy;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.shindygo.shindy.dummy.DummyContent;
-import com.shindygo.shindy.dummy.DummyContent.DummyItem;
+import com.shindygo.shindy.adapter.MyCreatedEventsAdapter;
+import com.shindygo.shindy.interfaces.Click;
+import com.shindygo.shindy.model.EventInvite;
+import com.shindygo.shindy.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+
 public class CreatedEventsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private static final String TAG = CreatedEventsFragment.class.getSimpleName();
+    RecyclerView rv;/*
+    @BindView(R.id.tv_invite)
+    TextView tvInvite;
+    @BindView(R.id.linearLayout)
+    LinearLayout linearLayout;
+    @BindView(R.id.linearLayout2)
+    LinearLayout linearLayout2;*/
+   /* @BindView(R.id.list_item_profile)
+    TextView listItemProfile;
+    @BindView(R.id.ll_details)
+    LinearLayout llDetails;
+    @BindView(R.id.star_favorite)
+    ImageView starFavorite;
+    @BindView(R.id.list_item_favorite)
+    TextView listItemFavorite;*/
+/*    @BindView(R.id.ll_invited)
+    LinearLayout llInvited;
+    @BindView(R.id.list_item_invite)
+    TextView listItemInvite;
+    @BindView(R.id.list_item_message)
+    TextView listItemMessage;
+    @BindView(R.id.ll_invite)
+    LinearLayout llInvite;
+    @BindView(R.id.bar)
+    LinearLayout bar;*/
+
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -38,21 +67,17 @@ public class CreatedEventsFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static CreatedEventsFragment newInstance(int columnCount) {
+    public static CreatedEventsFragment newInstance() {
         CreatedEventsFragment fragment = new CreatedEventsFragment();
-        Bundle args = new Bundle();
+       /* Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -63,47 +88,108 @@ public class CreatedEventsFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyCreatedEventsAdapter(DummyContent.ITEMS, mListener));
+            rv = (RecyclerView) view;
+            rv.setLayoutManager(new LinearLayoutManager(context));
+            rv.setHasFixedSize(true);//every item of the RecyclerView has a fix size
+
         }
+        loadRecyclerViewData();
         return view;
     }
 
 
+    private void loadRecyclerViewData() {
+        // Showing refresh animation before making http call
+       // mSwipeRefreshLayout.setRefreshing(true);
+
+        final Api api = Api.getInstance();
+        api.fetchCreatedEvents(User.getCurrentUserId(),new Callback<List<EventInvite>>() {
+            @Override
+            public void onResponse(Call<List<EventInvite>> call, Response<List<EventInvite>> response) {
+                List<EventInvite> eventsList = new ArrayList<>();
+                Log.v(TAG, response.toString());
+
+                if (response.body()!=null)
+                    eventsList = response.body();
+
+                Log.i(TAG, response.message());
+                Log.v(TAG, "list size; "+ eventsList.size());
+                try {
+
+                    listEvents(eventsList, rv);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<EventInvite>> call, Throwable t) {
+                /*users.clear();
+                adapter.notifyDataSetChanged();*/
+                Log.e(TAG, "failed");
+                t.printStackTrace();
+            }
+        });
+
+
+    }
+
+    private void listEvents(List<EventInvite> eventsList, RecyclerView rv) {
+
+        MyCreatedEventsAdapter adapter = new MyCreatedEventsAdapter(eventsList, rv.getContext(),
+                new Click<EventInvite>() {
+            @Override
+            public void onClick(int id, View view, EventInvite event) {
+                switch (id) {
+                    case R.id.ll_details: {
+                        String json = event.toJSON();
+                        Log.v(TAG,json );
+                        Bundle args = new Bundle();
+                        args.putString(EventActivity.EXTRA_MODEL, json);
+                        args.putString(EventActivity.EXTRA_EVENT_ID, event.getEventId());
+
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        Fragment fragment = new EventActivity();
+                        fragment.setArguments(args);
+                        fm.beginTransaction()
+                                .replace(R.id.frame, fragment)
+                                .addToBackStack("my_fragment")
+                                .commit();
+
+                        break;
+                    }
+                    case R.id.ll_invite: {
+
+
+                        break;
+                    }
+                    case R.id.ll_invited: {
+
+
+                        break;
+                    }
+                }
+            } });
+        rv.setAdapter(adapter);
+
+
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+    }
+
+
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
         }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
-    }
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+        }
 }

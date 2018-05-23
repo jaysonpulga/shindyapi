@@ -1,6 +1,7 @@
 package com.shindygo.shindy;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import android.widget.TimePicker;
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.IpCons;
+import com.google.gson.Gson;
 import com.shindygo.shindy.model.Event;
 import com.shindygo.shindy.model.EventInvite;
 import com.shindygo.shindy.model.Image;
@@ -65,8 +67,11 @@ public class EventActivity extends Fragment  {
 
     private static final String TAG = "EventActivity";
     private static final int RQC_IMG_CHOOSER = IpCons.RC_IMAGE_PICKER;
+    public static final String EXTRA_EVENT_ID = "event_id";
+    public static final String EXTRA_MODEL = "extra_model";
 
-
+    private static final int UPDATE = 1;
+    private static final int CREATE = 0;
 
     @BindView(R.id.back)
     ImageView back;
@@ -137,18 +142,54 @@ public class EventActivity extends Fragment  {
     private RelativeLayout mRelativeLayout;
     private Api api;
     private Event event ;
+    private String eventId;
     private boolean saving;
+
+    private boolean update;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args =getArguments();
+        if (args != null) {
+            eventId  =  args.getString(EXTRA_EVENT_ID);
+            String json   =  args.getString(EXTRA_MODEL);
+            event = new Gson().fromJson(json, Event.class);
+
+
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_event, container, false);
         ButterKnife.bind(this, view);
+        showProgressBar(true);
+
         FontUtils.setFont(title, FontUtils.Be_Bright);
+        Activity mActivity = getActivity();
+
+        if(mActivity instanceof MainActivity){
+            //
+            event = null;
+            eventId = "";
+
+        }else{
+            back.setImageResource(R.drawable.left_arrow);
+            //eventId  =
+            update =true;
+            btnSave.setText(R.string.save);
+        }
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) getActivity()).openenDrawer();
+                Activity mActivity = getActivity();
+                if(mActivity instanceof MainActivity){
+                    ((MainActivity) getActivity()).openenDrawer();
+                }else{
+                    getFragmentManager().popBackStack();
+                }
             }
         });
         etDescription.addTextChangedListener(new TextWatcher() {
@@ -338,8 +379,51 @@ public class EventActivity extends Fragment  {
 
         sliderImages = (InfiniteIndicator) view.findViewById(R.id.infinite_anim_circle);
 
-
+        if(update)setDataToViews(event);
+        showProgressBar(false);
         return view;
+    }
+
+    private void setDataToViews(Event event) {
+        etEventName.setText(event.getEventName());
+        etLocation.setText(event.getAddress());
+        etZipcode.setText(event.getZipCode());
+        etDescription.setText(event.getDescription());
+        etTicketPrice.setText(event.getTicketPrice());/*
+        //event.setRepresentative(etCoHost.getTag()==null?"": (String) etCoHost.getTag());
+        SimpleDateFormat sdf1 = new SimpleDateFormat(TextUtils.SDF_1);*/
+        //event.setCreateDate(sdf1.format(new Date()));
+        tvDateStart.setText(event.getSchedStartDate());
+        tvDateEnd.setText(event.getSchedEndDate());
+        tvTimeStart.setText(event.getStartTime());
+        tvTimeEnd.setText(event.getEndTime());
+        tvDateExpire.setText(event.getExpiryDate());
+        etMaxMale.setText(event.getMaxMale());
+        etMaxFemale.setText(event.getMaxFemale());
+        etMaxFemale.setText(event.getWebsiteUrl());
+       try{
+           cpAbleInvite.setChecked(Integer.parseInt(event.getAbleGuestInvite())==1);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+        try {
+            if(pageViews==null)pageViews = new ArrayList<>();
+            Log.v(TAG, "setviews setviews");
+
+            pageViews.addAll(Image.toPage(event));
+            if(pageViews!=null){
+                Log.v(TAG, "setviews pagviews != null");
+                Log.v(TAG, "page.res " + pageViews.get(0).res  );
+                Log.v(TAG, "page.data " + pageViews.get(0).data  );
+
+                imageSlider(pageViews);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /*//event.setImage(Image.from(pageViews));
+        event.setNotes("");
+        event.setEventId("");*/
     }
 
     private void showProgressBar(boolean show) {
@@ -368,7 +452,7 @@ public class EventActivity extends Fragment  {
                         if(response.isSuccessful()){
                             if(getView()!=null)
                                 Snackbar.make(getView().findViewById(R.id.rl), R.string.event_successfully_created, Snackbar.LENGTH_LONG).show();
-                            getActivity().onBackPressed();
+                            if(!update)( (MainActivity ) getActivity()).getSupportFragmentManager().popBackStack();
                         }
                     }catch (NullPointerException e){
                         e.printStackTrace();
@@ -443,7 +527,10 @@ public class EventActivity extends Fragment  {
 
 
     private Event create() {
-        event = new Event();
+        if(!update){
+            event = new Event();
+            event.setEventId("");
+        }
         event.setUserFbId(User.getCurrentUserId());
         event.setEventName(getText(etEventName));
         event.setAddress(getText(etLocation));
@@ -476,7 +563,7 @@ public class EventActivity extends Fragment  {
         event.setAbleGuestInvite(cpAbleInvite.isChecked()? "1":"0");
         event.setImage(Image.from(pageViews));
         event.setNotes("");
-        event.setEventId("");
+        //event.setEventId("");
 
 
         //    String startTime ;             //	10:00 AM

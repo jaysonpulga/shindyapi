@@ -244,7 +244,7 @@ public class MyShindigsFragment extends Fragment implements SwipeRefreshLayout.O
             }
         });
 
-        api.fetchInvitedEvents("a12345",new Callback<List<EventInvite>>() {
+        api.fetchInvitedEvents(User.getCurrentUserId(),new Callback<List<EventInvite>>() {
             @Override
             public void onResponse(Call<List<EventInvite>> call, Response<List<EventInvite>> response) {
                 List<EventInvite> eventsList = new ArrayList<>();

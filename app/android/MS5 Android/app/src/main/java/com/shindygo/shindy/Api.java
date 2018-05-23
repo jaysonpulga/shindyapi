@@ -216,6 +216,31 @@ public class Api {
         fetchEvents.enqueue(callback);
     }
 
+    public  void fetchCreatedEvents(String fbId,   Callback<List<EventInvite>> callback){
+        Call<List<EventInvite>>fetchEvents = shindiServer.fetchCreatedEvents(fbId);
+        fetchEvents.enqueue(callback);
+    }
+
+    public  void fetchLikedEvents(String fbId,   Callback<List<EventInvite>> callback){
+        Call<List<EventInvite>>fetchEvents = shindiServer.fetchLikedEvents(fbId);
+        fetchEvents.enqueue(callback);
+    }
+    public void fetchBlockedEvents(String fbId,   Callback<List<EventInvite>> callback){
+        Call<List<EventInvite>>fetchEvents = shindiServer.fetchBlockedEvents(fbId);
+        fetchEvents.enqueue(callback);
+    }
+
+    /**Get All Rate and Review List of User
+     Note: use for fetching the record event rate, associated by user email
+     *
+     * @param fbId user fb id
+     * @param callback
+     */
+    public void fetchReviewsByUser(String fbId,   Callback<List<EventInvite>> callback){
+        Call<List<EventInvite>>fetchEvents = shindiServer.fetchReviewsByUser(fbId);
+        fetchEvents.enqueue(callback);
+    }
+
     public void createEvent(Event event,   Callback<JSONObject> callback){
         Call<JSONObject>createEvent = shindiServer.createEvent(event.toMap());
         createEvent.enqueue(callback);

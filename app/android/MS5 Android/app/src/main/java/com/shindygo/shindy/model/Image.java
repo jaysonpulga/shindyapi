@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,5 +162,21 @@ public class Image {
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
         byte[] b = baos.toByteArray();
         return Base64.encodeToString(b, Base64.DEFAULT);
+    }
+
+    public static ArrayList <Page> toPage(Event event) {
+        ArrayList<Page> pages = new ArrayList<>();
+        List<Image> list = event.getImage();
+        if(list!=null){
+            for (int i = 0; i < list.size(); i++) {
+                pages.add(toPage(list.get(i).getData()));
+            }
+        }
+        return pages;
+    }
+
+    private static Page toPage(String data) {
+        return  new Page(data);
+
     }
 }
